@@ -24,7 +24,7 @@ const SignupClient= (req,callback)=>{
 
     if(req.Password){
       var hash = bcrypt.hashSync(req.Password, salt);
-      var query=`INSERT INTO Clients (FirstName,LastName,Email,password,Gender,Age,City,Adresse,imgsrc) values ('${req.FirstName}','${req.LastName}','${req.Email}','${hash}','${req.Gender}',${req.Age},'${req.City}','${req.Adresse}','https://bootdey.com/img/Content/User_for_snippets.png');`
+      var query=`INSERT INTO Clients (Username,Email,password,Gender,Age,City,Adresse,imgsrc) values ('${req.Username}','${req.Email}','${hash}','${req.Gender}',${req.Age},'${req.City}','${req.Adresse}','https://bootdey.com/img/Content/User_for_snippets.png');`
 
       connection.query(query, function (error, results, fields) {
         callback(results,error)});

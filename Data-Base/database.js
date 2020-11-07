@@ -1,17 +1,29 @@
-var mysql      = require('mysql');
+var mysql = require("mysql");
 var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '0000',
-  database : 'east'
+  host: "localhost",
+  user: "root",
+  password: "root",
+  database: "east",
 });
-         /* Db Connection*/
+/* Db Connection*/
 
-connection.connect(function(err) {
-          if (err) throw err;
-          console.log("Connected!");
+connection.connect(function (err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
+
+const sql = (query) => {
+  return new Promise((resolve, reject) => {
+    connection.query(query, (error, results) => {
+      if (!!error) {
+        reject(error);
+      }
+      resolve(results);
+    });
   });
+};
 
-module.exports={
-  connection
-}
+module.exports = {
+  connection,
+  sql
+};

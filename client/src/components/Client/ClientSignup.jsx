@@ -1,138 +1,274 @@
-import React from "react"
-import SelectState from "../Elements/selectstate.jsx"
-import Ageinout from "../Elements/ageinput.jsx"
 
-import axios from 'axios';
-import { withRouter } from "react-router-dom";
-class ClientSignup extends React.Component {
-    constructor(props){
-        super(props)
-		this.state={
-			state:"",
-			age:null,
-			firstName: "",
-            lastName: "",
-            Email: "",
-            password: "",
-			repass: "",
-			age: "",
-			gender: "",
-			Adresse: "",
-		}
-		this.chandleSubmit=this.chandleSubmit.bind(this)
-		this.handelstatechange=this.handelstatechange.bind(this)
-		this.handelagechange=this.handelagechange.bind(this)
-		this.handleChange = this.handleChange.bind(this);
-		this.handleClick = this.handleClick.bind(this);
-	}
+import React from 'react';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Paper from '@material-ui/core/Paper';
+import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import  { useState } from 'react';
+import axios from "axios"
+import {connect} from "react-redux"
 
-	handleClick(e) {
-		console.log("called")
-		e.preventDefault();
-		let clientData = {
-		  FirstName: this.state.firstName,
-		  LastName: this.state.lastName,
-		  Email: this.state.Email,
-		  Password: this.state.password,
-		  Gender: this.state.gender,
-		  Age: this.state.age,
-		  City: this.state.state,
-		  Adresse: this.state.Adresse,
-		};
-		if (this.state.password == this.state.password) {
-			
-		  axios
-			.post("/api/Clients/Signup", clientData)
-			.then((data) => {
-			  console.log(data);
-			  if(data.data.Dup){
-				  alert("Email-Exist")
-			  }else if(data.data.Signup) {
-				this.props.history.push("/ClientLogin");
-			  }
-			})
-			.catch((e) => {
-			  console.log(e);
-			});
-		}
-	  }
-	
-	  handleChange(e) {
-		var name = e.target.name;
-		this.setState({
-		  [name]: e.target.value,
-		});
-	  }
-
-chandleSubmit (event) {
-		event.preventDefault();
-	  };
-	  
-handelstatechange(state){
-	this.setState({state})
+import { withRouter } from "react-router";
+import SelectField from "../Elements/FreelancerField.jsx"
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
 }
 
-handelagechange(age){
-	this.setState({age})
-}
-
-render() {
-        return <div>
-            
-		<div className="wrapper" style={{"backgroundImage": 'url(images/bg-registration-form-2.jpg)',"backgroundRepeat":"no-repeat","backgroundSize":"cover",background:"black"}}>
-					<div className="inner" style={{"backgroundRepeat":"no-repeat","backgroundSize":"cover",backgroundPosition:"center",marginBottom:"50px",marginTop:"30px"}}>
-						<form action="" method="" className="" role="form" onSubmit={this.handleClick}>
-							<h3>FreeLancer-Signup</h3>
-							<div className="form-group">
-								<div className="form-wrapper">
-									<label for="">First Name</label>
-									<input type="text" className="form-control" name="firstName" type="text" size="18" onChange={this.handleChange}/>
-								</div>
-								<div className="form-wrapper">
-									<label for="">Last Name</label>
-									<input className="form-control" name="lastName" type="text" size="18"  onChange={this.handleChange}/>
-								</div>
-							</div>
-							<div className="form-group">
-								<div className="form-wrapper">
-								<Ageinout age={this.handelagechange}/>
-								</div>
-							</div>				
-							
-							<div className="form-wrapper">
-								<label for="">Email</label>
-								<input type="text" className="form-control" name="Email" type="text" size="18" onChange={this.handleChange}/>
-							</div>
-							<div className="form-wrapper">
-								<label for="">Password</label>
-								<input type="password" className="form-control" name="password" type="text" size="18" onChange={this.handleChange}/>
-							</div>
-							<div className="form-wrapper">
-								<label for="">Confirm Password</label>
-								<input type="password" className="form-control" name="repass" type="text" size="18" onChange={this.handleChange}/>
-							</div>
-							<div className="form-group">
-							<div className="form-wrapper">
-									<label for="">Address</label>
-									<input type="text" className="form-control" name="Adresse" type="text" size="18" onChange={this.handleChange}/>
-								</div>
-								<div className="form-wrapper">
-								<SelectState state={this.handelstatechange}/>
-								</div>
-							</div>		
-							<div className="checkbox">
-								<label>
-									<input type="checkbox"/>
-					
-								</label>
-							</div>
-							<button>Register Now</button>
-						</form>
-					</div>
-			</div>
-		   
-		</div>
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100vh',
+  },
+  image: {
+    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
+  paper: {
+    margin: theme.spacing(8, 4),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
+const mapStateToProps = (state, ownProps) => {
+  return {
+ 
+    user:state.user
   }
 }
-export default withRouter(ClientSignup)
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    update: (value) => dispatch({
+      type: 'updatedata',
+      value
+    })
+  }
+}
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(function SignInSide(props) {
+  const [Email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+   const [repass, setrepass] = useState("")
+   const [Username, setUsername] = useState("")
+  const [Gender, setGender] = useState("")
+   const [Age, setAge] = useState(null)
+  const [City, setCity] = useState("")
+    const [Adresse, setAdresse] = useState("")
+  const [Field, setField] = useState("")
+  const classes = useStyles();
+const handleChange = function (e) {
+  console.log(e.target.name)
+    var Labels={"Email":setEmail,"password":setPassword,"repass":setrepass,"Username":setUsername,"Gender":setGender,"Age":setAge,"City":setCity,"Adresse":setAdresse,"Field":setField}
+    Labels[e.target.name](e.target.value)
+}
+  
+  const signup = function (e){
+     e.preventDefault();
+    let clientData = {  
+      Username: Username,
+      Email:Email,
+      password:password,
+      Gender:Gender,
+      Age:Age,
+      City:City,
+      Adresse:Adresse,
+      type: "client"
+    };
+    if (password === repass) {
+      axios
+        .post("/register", clientData)
+        .then((data) => {
+          console.log(data);
+       if(data.data.Signup){
+		    props.history.push("/ClientLogin");
+	   }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }else{
+		alert("Check password")
+	}
+  }
+  return (
+    
+    <Grid container component="main" className={classes.root}>
+      <CssBaseline />
+      <Grid item xs={false} sm={4} md={7} className={classes.image} />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+          Client  Sign In
+          </Typography>
+          <form className={classes.form} onSubmit={signup} noValidate>
+          
+          <TextField
+          onChange={handleChange}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="Username"
+              label="Username"
+              name="Username"
+              autoComplete="email"
+              autoFocus
+            />
+
+            <TextField
+            onChange={handleChange}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="Email"
+              autoComplete="email"
+              autoFocus
+            />
+  <div id="FlexSignup">
+            <TextField
+            onChange={handleChange}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+
+              <TextField
+              onChange={handleChange}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="repass"
+              label="password Again"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+  </div>
+
+  <div id="FlexSignup">
+<TextField
+onChange={handleChange}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="City"
+              label="city"
+              type="city"
+              id="city"
+              autoComplete="city"
+            />
+
+            <TextField
+            onChange={handleChange}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="Adresse"
+              label="adress"
+              type="adress"
+              id="adress"
+              autoComplete="adress"
+            />
+
+              
+  </div>
+
+  <TextField
+  onChange={handleChange}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="Age"
+              label="Age"
+              type="number"
+              id="Age"
+            />
+            <FormControlLabel
+            onChange={handleChange}
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+            Client  Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="#" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+            <Box mt={5}>
+              <Copyright />
+            </Box>
+          </form>
+        </div>
+      </Grid>
+    </Grid>
+  );
+}));
+
+
+
+
 

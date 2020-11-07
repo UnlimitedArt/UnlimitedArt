@@ -23,8 +23,12 @@ class Login extends React.Component {
 render() {
         return <div>
          <Switch>
-            <Route path="/ClientLogin" component={ClientLogin}/>
-            <Route path="/FreelancerLogin" component={FreelancerLogin}/>
+         <Route path="/ClientLogin">
+            <ClientLogin change={this.props.Change}/>
+          </Route>
+          <Route path="/FreelancerLogin">
+            <FreelancerLogin change={this.props.Change}/>
+          </Route>
          </Switch>
               </div>
   } 

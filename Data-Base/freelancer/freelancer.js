@@ -25,7 +25,7 @@ const SignupFreeLancer= (req,callback)=>{
       console.log(req.Password)
       
       var hash = bcrypt.hashSync(req.Password, salt);
-      var query=`INSERT INTO Freelancers (FirstName,LastName,Email,password,Gender,Age,City,Adresse,Field,imgsrc) values ('${req.FirstName}','${req.LastName}','${req.Email}','${hash}','${req.Gender}',${req.Age},'${req.City}','${req.Adresse}','${req.Field}','https://bootdey.com/img/Content/User_for_snippets.png');`
+      var query=`INSERT INTO Freelancers (Username,Email,password,Gender,Age,City,Adresse,Field,imgsrc) values ('${req.Username}','${req.Email}','${hash}','${req.Gender}',${req.Age},'${req.City}','${req.Adresse}','${req.Field}','https://bootdey.com/img/Content/User_for_snippets.png');`
       connection.query(query, function (error, results, fields) {
         console.log(results,error)
         callback(results,error)});
