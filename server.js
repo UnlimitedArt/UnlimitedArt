@@ -76,7 +76,7 @@ app.post("/ClientLogin", passport.authenticate("local"), function (req, res) {
   res.json({ user: req.user, Login: true, type:"client" });
 });
 app.post("/FreelancerLogin", passport.authenticate("freelancer"), function (req, res) {
-  res.json({ user: req.user, Login: true, type:"client" });
+  res.json({ user: req.user, Login: true, type:"freelancer" });
 });
 
 app.get("/register", checkNotAuthenticated, (req, res) => {
