@@ -1,115 +1,72 @@
-import React, { useState } from 'react';
+import React from "react";
 import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-  NavbarText
-} from 'reactstrap';
+  makeStyles,
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+import Menu from "./menu.jsx";
 
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-  } from "react-router-dom";
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faHome,faShoppingBasket,faInfoCircle,faUserPlus,faSignInAlt,faBriefcase,faUserAlt} from '@fortawesome/free-solid-svg-icons'
-  
-  const Home = <FontAwesomeIcon icon={faHome} />
-  const Offers = <FontAwesomeIcon icon={faShoppingBasket} />
-  const About = <FontAwesomeIcon icon={faInfoCircle} />
-  const Login = <FontAwesomeIcon icon={faUserPlus} />
-  const SignUp = <FontAwesomeIcon icon={faSignInAlt} />
-  const FreeLancer =  <FontAwesomeIcon icon={faBriefcase} />
-  const Client =  <FontAwesomeIcon icon={faUserAlt} />
-
-class NavbarUA extends React.Component {
-    constructor(props){
-        super(props)
-        this.state={
-            isOpen:false
-        }
-        this.toggle=this.toggle.bind(this)
-    }
-toggle(){
-     this.setState({isOpen:!this.state.isOpen});
-    }
-render() {
-        return <div>
-    <div >
-        <Navbar color="light" light expand="md" id="zindexnav">
-          <NavbarBrand href="/">UnlimitedArt</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="mr-auto" navbar>
-              <NavItem>
-                <NavLink>{Home} <Link to="/">Home</Link></NavLink>
-              </NavItem>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>{Offers} Offers
-                </DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>
-                    Option 1
-                  </DropdownItem>
-                  <DropdownItem>
-                    Option 2
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              <NavItem>
-                <NavLink href="#">{About} About</NavLink>
-              </NavItem>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                 {Login} SignUp
-                </DropdownToggle>
-                <DropdownMenu right>
-                <Link to="/FreeLancerSignup">   <DropdownItem>
-                {FreeLancer} SignUp As FreeLancer
-                  </DropdownItem>
-                  </Link>
-                  <DropdownItem divider />
-                  <Link to="/ClientSignup">
-                  <DropdownItem>
-                 {Client} SignUp As Client
-                  </DropdownItem>
-                  </Link>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                 {SignUp} Login
-                </DropdownToggle>
-                <DropdownMenu right>
-                <Link to="/FreelancerLogin">
-                  <DropdownItem>
-                  {FreeLancer} Login As FreeLancer
-                  </DropdownItem>
-                  </Link>
-                  <DropdownItem divider />
-                  <DropdownItem>
-                  {Client} <Link to="/ClientLogin">Login As Client</Link>
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Nav>
-            <NavbarText>Simple Text</NavbarText>
-          </Collapse>
-        </Navbar>
-      </div>
-        </div>
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
   }
-}
+}));
 
-  
-  export default NavbarUA;
+export default function ButtonAppBar({ links }) {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" className={classes.title}>
+            News
+          </Typography>
+          {links.map((link, key) => {
+            if ("children" in link) {
+              return (
+                <Menu
+                  key={key}
+                  display={link.display}
+                  children={link.children}
+                />
+              );
+            } else {
+              return (
+                <Link to={link.path}  key={key}>
+                <Button key={key} color="inherit">
+                  {link.display}
+                </Button></Link>
+              );
+            }
+          })}
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
+}

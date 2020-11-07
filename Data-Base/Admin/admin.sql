@@ -1,6 +1,6 @@
 
 CREATE TABLE Admin (name INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255) ,
+    Username VARCHAR(255) ,
     password VARCHAR(100),
-     CONSTRAINT Name UNIQUE (name)
+     CONSTRAINT Name UNIQUE (Username)
 );

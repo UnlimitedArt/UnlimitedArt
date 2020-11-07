@@ -2,7 +2,7 @@ import React from "react"
 
      //////Client/////
 
- import ClientSignup from "./Client/ClientSignup.jsx"
+import ClientSignup from "./Client/ClientSignup.jsx"
  
     //////FreeLancer/////
 

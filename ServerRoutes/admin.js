@@ -1,5 +1,5 @@
 const express = require('express');
-const Admin = require("../Data-Base/Admin/Admin");
+const Admin = require("../Data-Base/Admin/admin");
 var router = express.Router();
 
 

@@ -1,8 +1,7 @@
 CREATE DATABASE east;
 
 CREATE TABLE Freelancers (id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-     FirstName VARCHAR(20) ,
-     LastName VARCHAR(20),
+     Username VARCHAR(20) ,
      Email VARCHAR(50)  ,
      password VARCHAR(100),
      Gender VARCHAR(10),
@@ -11,6 +10,8 @@ CREATE TABLE Freelancers (id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
      Adresse VARCHAR(40),
      Field VARCHAR(20),
      imgsrc VARCHAR(200),
-     CONSTRAINT EmaiUn UNIQUE (Email)
+     provider VARCHAR(20),
+     providerId VARCHAR(50),
+     CONSTRAINT EmaiUn UNIQUE (Email,Username)
 );
 
